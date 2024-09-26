@@ -15,9 +15,9 @@ service = Service(cdp)
 #                     driver.quit()
 
 #           five_Sec()
-
+scrape=input("what page would you like to scrape? ")
 driver = webdriver.Chrome(service=service)
-driver.get("https://github.com/Rohit-YV")
+driver.get(f"{scrape}")
 repo="https://github.com/Rohit-YV"
 time.sleep(2)
 res = driver.find_elements(By.CLASS_NAME, "wb-break-all")
@@ -25,17 +25,30 @@ time.sleep(2)
 link=[]
 flink=[]
 def going_for_raw(second_page):
-          pass
-          # raw=driver.find_element(By.CLASS_NAME,"gUkoLg")
-          # raw.click()
-          # html = driver.page_source
-          # html=f"{html}"
-          # print(html)
+    # Navigate to the second page (file page)
+    driver.get(second_page)
+    
+    try:
+        # Find and click the "Raw" button using XPath for better accuracy
+        raw_button = driver.find_element(By.XPATH, '//a[contains(@href, "/raw/")]')
+        raw_button.click()
+        time.sleep(2)
+        
+        # Fetch the raw HTML content
+        html_content = driver.page_source  # Correct way to get the HTML content of the page
+        if "password" in html_content:
+          print(f"found password{second_page}")
+        
+    except Exception as e:
+       
+        print(f"Error fetching raw content: {e}")
+
 
 
 
 def loop(next_page):
           global a
+          global second_page
           driver.get(next_page)
           time.sleep(2)
           res2 = driver.find_elements(By.CLASS_NAME, "Link--primary")
